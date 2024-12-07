@@ -1,0 +1,27 @@
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+
+const ResultsScreen = ({ quizId }) => {
+  const [leaderboard, setLeaderboard] = useState([]);
+
+  useEffect(() => {
+    axios.get(`http://localhost:5000/api/quizzes/${quizId}/leaderboard`).then((response) => {
+      setLeaderboard(response.data.leaderboard);
+    });
+  }, [quizId]);
+
+  return (
+    <div>
+      <h2>Leaderboard</h2>
+      <ul>
+        {leaderboard.map((entry, index) => (
+          <li key={index}>
+            {entry.user}: {entry.score}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default ResultsScreen;
